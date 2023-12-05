@@ -11,11 +11,13 @@ public class Main {
     public static void main(String[] args) {
 
         String filepath = "puzzle_input/day1.csv";
-        calibrateValues(filepath);
+        calibrateValues(filepath, 1);
+
+        calibrateValues(filepath, 2);
 
     }
 
-    private static void calibrateValues(String filepath) {
+    private static void calibrateValues(String filepath, int method) {
 
         List<Calibration> myList = new ArrayList<>();
 
@@ -34,7 +36,7 @@ public class Main {
 
         int sum = 0;
         for(Calibration s : myList) {
-            sum += s.getCalibrationValue();
+            sum += s.getCalibrationValue(method);
             // System.out.println(sum);
         }
         System.out.println("The total calibration value is " + sum);
