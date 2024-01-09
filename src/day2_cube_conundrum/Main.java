@@ -13,7 +13,7 @@ public class Main {
         String file = "puzzle_input/day2.csv";
 
 /*
- manual testing of my logic before importing the input to fit
+ manual testing of my logic before importing the input
         Hand firstHand = new Hand(4,3,0);
         Hand secondHand = new Hand(0,6,2);
         Hand thirdHand = new Hand(0,0,2);
