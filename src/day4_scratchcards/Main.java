@@ -8,12 +8,14 @@ public class Main {
 
     public static void main(String[] args) {
 
-//        String example = "puzzle_input/day4_example.csv";
-//        List<String> exampleList = importFile(example);
-//        List<String> exampleWin = splitList(exampleList, "winning");
-//        List<String> exampleScratch = splitList(exampleList, "scratch");
-//
-//        calculateWinnings(exampleWin,exampleScratch);
+/*
+        String example = "puzzle_input/day4_example.csv";
+        List<String> exampleList = importFile(example);
+        List<String> exampleWin = splitList(exampleList, "winning");
+        List<String> exampleScratch = splitList(exampleList, "scratch");
+
+        calculateWinnings(exampleWin,exampleScratch);
+*/
 
         String file = "puzzle_input/day4.csv";
         List<String> importedList = importFile(file);
