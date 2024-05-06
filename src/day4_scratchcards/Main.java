@@ -8,22 +8,13 @@ public class Main {
 
     public static void main(String[] args) {
 
-/*
-        String example = "puzzle_input/day4_example.csv";
-        List<String> exampleList = importFile(example);
-        List<String> exampleWin = splitList(exampleList, "winning");
-        List<String> exampleScratch = splitList(exampleList, "scratch");
-
-        calculateWinnings(exampleWin,exampleScratch);
-*/
-
         String file = "puzzle_input/day4.csv";
         List<String> importedList = importFile(file);
 
         List<String> winningNumbers = splitList(importedList, "winning");
         List<String> scratchNumbers = splitList(importedList, "scratch");
 
-        calculateWinnings(winningNumbers,scratchNumbers);
+        calculateWinnings(winningNumbers, scratchNumbers);
 
     }
 
@@ -34,7 +25,7 @@ public class Main {
         try {
             Scanner csvReader = new Scanner(new File(filepath));
             csvReader.useDelimiter(",");
-            while(csvReader.hasNext()) {
+            while (csvReader.hasNext()) {
                 String newLine = csvReader.nextLine();
                 myList.add(newLine);
             }
@@ -51,7 +42,6 @@ public class Main {
 
         List<String> winningList = new ArrayList<>();
         List<String> scratchList = new ArrayList<>();
-
 
         for (String s : myList) {
             String numbersOnly = s.substring(9);
@@ -75,15 +65,17 @@ public class Main {
     }
 
     private static void calculateWinnings(List<String> winningNumbers, List<String> scratchNumbers) {
-
         int lineNumber;
         int matchPerLine = 0;
         int totalScore = 0;
 
+        List<Card> cardList = new ArrayList<>();
+        int totalNumber;
+
         StringBuilder scratch = new StringBuilder();
         StringBuilder winning = new StringBuilder();
 
-        for(int i = 0; i < scratchNumbers.size(); i++) {
+        for (int i = 0; i < scratchNumbers.size(); i++) {
             String scratchLine = scratchNumbers.get(i);
             // set the line number so the scratch numbers and winning numbers use the same line
             lineNumber = i;
@@ -107,17 +99,76 @@ public class Main {
                     scratch.setLength(0);
                 }
             }
-            // at the end of looping through the scratch numbers
-            if (matchPerLine > 1) {
-                int matchScore = (int) Math.pow(2, (matchPerLine - 1));
-                totalScore += matchScore;
-            } else {
-                totalScore += matchPerLine;
-            }
+            // at the end of looping through the scratch numbers, calculate the score for Part2
+            cardList.add(new Card(i + 1, matchPerLine));
+
+            // at the end of looping through the scratch numbers, calculate the score for Part1
+            totalScore += scorePart1(matchPerLine);
             matchPerLine = 0;
         }
+
+        // totalScore for Part1
         System.out.println("The total score is " + totalScore);
 
+        //totalNumber for Part2
+        totalNumber = scorePart2(cardList);
+        System.out.println("The total number of cards is " + totalNumber);
     }
 
+    private static int scorePart1(int matchPerLine) {
+        int totalScore = 0;
+        if (matchPerLine > 1) {
+            int matchScore = (int) Math.pow(2, (matchPerLine - 1));
+            totalScore += matchScore;
+        } else {
+            totalScore += matchPerLine;
+        }
+        return totalScore;
+    }
+
+    private static int scorePart2(List<Card> list) {
+        int totalNumber = 0;
+
+        for (int i = 0; i < list.size(); i++) {
+            int duplicates = list.get(i).getNumberOfDuplicates();
+            int matches = list.get(i).getNumberOfMatches();
+            if (matches > 0) {
+                for (int j = i + 1; j < list.size() && matches > 0; j++) {
+                    Card card = list.get(j);
+                    card.setNumberOfDuplicates(card.getNumberOfDuplicates() + duplicates);
+                    matches--;
+                }
+            }
+        }
+
+        for (Card card : list) {
+            totalNumber += card.getNumberOfDuplicates();
+        }
+
+        return totalNumber;
+    }
+
+}
+
+class Card {
+    int cardNumber;
+    int numberOfMatches;
+    int numberOfDuplicates = 1;
+
+    public Card(int cardNumber, int numberOfMatches) {
+        this.cardNumber = cardNumber;
+        this.numberOfMatches = numberOfMatches;
+    }
+
+    public void setNumberOfDuplicates(int numberOfDuplicates) {
+        this.numberOfDuplicates = numberOfDuplicates;
+    }
+
+    public int getNumberOfMatches() {
+        return numberOfMatches;
+    }
+
+    public int getNumberOfDuplicates() {
+        return numberOfDuplicates;
+    }
 }
